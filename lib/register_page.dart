@@ -11,6 +11,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _nameController = TextEditingController();
   String _role = "patient"; // default role
   bool _isLoading = false;
 
@@ -22,6 +23,7 @@ class _RegisterPageState extends State<RegisterPage> {
           .createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
+        
       );
 
       await FirebaseFirestore.instance
@@ -30,6 +32,7 @@ class _RegisterPageState extends State<RegisterPage> {
           .set({
         "email": _emailController.text.trim(),
         "role": _role,
+        "name": _nameController.text.trim(),
         "createdAt": DateTime.now(),
       });
 
@@ -38,7 +41,13 @@ class _RegisterPageState extends State<RegisterPage> {
       );
 
       // Redirect to Login
-      Navigator.pushReplacementNamed(context, '/');
+      Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (context) => LoginPage(),
+  ),
+);
+
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: $e")),
@@ -93,7 +102,19 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 24),
 
-                // Email
+                TextField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    labelText: "Name of Person/Organization",
+                    prefixIcon: const Icon(Icons.person),
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
                 TextField(
                   controller: _emailController,
                   decoration: InputDecoration(
