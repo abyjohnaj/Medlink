@@ -50,47 +50,94 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Register")),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Create an Account", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-                SizedBox(height: 20),
+    final theme = Theme.of(context);
 
+    return Scaffold(
+      backgroundColor: const Color(0xFFF5F5F5),
+      appBar: AppBar(
+        title: const Text("Register"),
+        backgroundColor: const Color(0xFF00796B),
+        foregroundColor: Colors.white,
+        elevation: 2,
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 450),
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: const [
+                BoxShadow(
+                  blurRadius: 12,
+                  color: Colors.black26,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.person_add_alt_1,
+                    size: 60, color: Color(0xFF00796B)),
+                const SizedBox(height: 16),
+                Text(
+                  "Create an Account",
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF00796B),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+
+                // Email
                 TextField(
                   controller: _emailController,
                   decoration: InputDecoration(
                     labelText: "Email",
-                    border: OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.email_outlined),
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 16),
 
+                // Password
                 TextField(
                   controller: _passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Password",
-                    border: OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
 
+                // Role Dropdown
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Register as: "),
-                    SizedBox(width: 10),
+                    const Text("Register as: ",
+                        style: TextStyle(fontWeight: FontWeight.w500)),
+                    const SizedBox(width: 10),
                     DropdownButton<String>(
                       value: _role,
-                      items: [
-                        DropdownMenuItem(value: "patient", child: Text("Patient")),
-                        DropdownMenuItem(value: "hospital", child: Text("Hospital")),
+                      items: const [
+                        DropdownMenuItem(
+                            value: "patient", child: Text("Patient")),
+                        DropdownMenuItem(
+                            value: "hospital", child: Text("Hospital")),
                       ],
                       onChanged: (value) {
                         setState(() {
@@ -100,27 +147,40 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 24),
 
+                // Register Button
                 _isLoading
-                    ? CircularProgressIndicator()
-                    : ElevatedButton(
-                        onPressed: _registerUser,
-                        child: Text("Register"),
+                    ? const CircularProgressIndicator()
+                    : SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _registerUser,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF00796B),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            textStyle: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w600),
+                          ),
+                          child: const Text("Register"),
+                        ),
                       ),
 
-                SizedBox(height: 10),
+                const SizedBox(height: 16),
+
+                // Login link
                 TextButton(
                   onPressed: () {
                     Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) => LoginPage(),
-  ),
-);
-
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()),
+                    );
                   },
-                  child: Text("Already have an account? Login"),
+                  child: const Text("Already have an account? Login"),
                 )
               ],
             ),

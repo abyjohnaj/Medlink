@@ -42,19 +42,13 @@ class _LoginPageState extends State<LoginPage> {
         if (role == "patient") {
           Navigator.push(
             context,
-  MaterialPageRoute(
-    builder: (context) => PatientPage(),
-  ),
-);
-
+            MaterialPageRoute(builder: (context) => PatientPage()),
+          );
         } else if (role == "hospital") {
           Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) => HospitalPage(),
-  ),
-);
-
+            context,
+            MaterialPageRoute(builder: (context) => HospitalPage()),
+          );
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -72,53 +66,116 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Login to MedLink", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-            SizedBox(height: 20),
-
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(
-                labelText: "Email",
-                border: OutlineInputBorder(),
-              ),
+      backgroundColor: const Color(0xFFF5F5F5),
+      appBar: AppBar(
+        title: const Text("Login"),
+        backgroundColor: const Color(0xFF00796B),
+        foregroundColor: Colors.white,
+        elevation: 2,
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(24),
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 450),
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: const [
+                BoxShadow(
+                  blurRadius: 12,
+                  color: Colors.black26,
+                  offset: Offset(0, 4),
+                ),
+              ],
             ),
-            SizedBox(height: 10),
-
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: "Password",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(height: 20),
-
-            _isLoading
-                ? CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: _loginUser,
-                    child: Text("Login"),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.lock_open_rounded,
+                    size: 60, color: Color(0xFF00796B)),
+                const SizedBox(height: 16),
+                Text(
+                  "Login to MedLink",
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF00796B),
                   ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
 
-            SizedBox(height: 10),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RegisterPage()),
-                );
-              },
-              child: Text("Don't have an account? Register"),
+                // Email field
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: "Email",
+                    prefixIcon: const Icon(Icons.email_outlined),
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Password field
+                TextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: "Password",
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    filled: true,
+                    fillColor: Colors.grey[100],
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+
+                // Login button
+                _isLoading
+                    ? const CircularProgressIndicator()
+                    : SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _loginUser,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF00796B),
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            textStyle: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w600),
+                          ),
+                          child: const Text("Login"),
+                        ),
+                      ),
+
+                const SizedBox(height: 16),
+
+                // Register link
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterPage()),
+                    );
+                  },
+                  child: const Text("Don't have an account? Register"),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
